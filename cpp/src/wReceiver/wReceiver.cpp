@@ -206,14 +206,21 @@ public:
 
             uint32_t N = nextExpectedSeqNum;
 
-            // If it receives a packet with seqNum not equal to N, it will send back an ACK with seqNum=N.
-            if (h.seqNum != N)
-            {
-            }
             // If it receives a packet with seqNum=N, it will check for the highest sequence number (say M) of the in­order packets it has already received and send ACK with seqNum=M+1.
-            else if (h.seqNum == N)
+            if (h.seqNum == N) // what ur expecting, need to deliver the buffer here
             {
+                // deliver the actual ring buffer not sure how we wanna implement that
             }
+            else if ((h.seqNum < N) || (h.seqNum >= N + window_size))
+            { // You get an older duplicate packet or way ahead of what you want, just drop it and reack
+              // do nothing here
+            }
+            else if (h.seqNum > N && h.seqNum < N + window_size) // get something ahead of what you want but still in range
+            {
+                /// need to buffer this packet for later use, add the ring buffer here
+            }
+
+            ackAndLog(nextExpectedSeqNum, clientAddr, len);
         }
     }
 };
