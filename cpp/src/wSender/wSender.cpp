@@ -16,11 +16,14 @@
 #include <cxxopts.hpp>
 #include <spdlog/spdlog.h>
 #include <netdb.h>
-#include "pugixml.hpp"
 #include <unordered_map>
 #include <unordered_set>
+#include <random>
+#include "../common/Crc32.hpp"
 
 using namespace std;
+using Clock = chrono::high_resolution_clock;
+using ms = chrono::milliseconds;
 
 class wSender
 {
@@ -31,23 +34,39 @@ public:
     string input_file;
     string output_log;
 
+    int sockfd = -1;
+    sockaddr_in serverAddr{};
+    socklen_t len = sizeof(serverAddr);
+
+    ofstream outputStream;
+
+    int firstInWindow = 0;
+    int nextSeqNum = 0;
+
+    chrono::time_point endTime{};
+
+    enum : uint32_t
+    {
+        START = 0,
+        END = 1,
+        DATA = 2,
+        ACK = 3
+    };
+
     struct PacketHeader
     {
-        unsigned int type;
-        unsigned int seqNum;
-        unsigned int length;
-        unsigned int checksum;
+        uint32_t type;     // 0: START; 1: END; 2: DATA; 3: ACK
+        uint32_t seqNum;   // Described below
+        uint32_t length;   // Length of data; 0 for ACK packets
+        uint32_t checksum; // 32-bit CRC
     };
 
-    struct OutPkt
-    {
-        PacketHeader header;
-        vector<unsigned char> buf;
-    };
+    vector<vector<uint8_t>> dataPkts;
 
-    void parseResults(argc, argv)
+    int parseResults(argc, argv)
     {
-        opts.add_options()("h,hostname", "The IP address of the host that wReceiver is running on.", cxxopts::value<string>())("p,port", "The port number on which wReceiver is listening", cxxopts::value<int>())("w,window-size", "Maximum number of outstanding packets in the current window.", cxxopts::value<int>())("i,input-size", "Path to the file that has to be transferred. It can be a text file or binary file.", cxxopts::value<string>())("o,output-log", "The file path to which you should log the messages as described above.", cxxopts::value<string>());
+        cxxopts::Options opts("wSender");
+        opts.add_options()("h,hostname", "The IP address of the host that wReceiver is running on.", cxxopts::value<string>())("p,port", "The port number on which wReceiver is listening", cxxopts::value<int>())("w,window-size", "Maximum number of outstanding packets in the current window.", cxxopts::value<int>())("i,input-file", "Path to the file that has to be transferred. It can be a text file or binary file.", cxxopts::value<string>())("o,output-log", "The file path to which you should log the messages as described above.", cxxopts::value<string>());
         //-h | --hostname The IP address of the host that wReceiver is running on.
         // -p | --port The port number on which wReceiver is listening.
         // -w | --window-size Maximum number of outstanding packets in the current window.
@@ -67,31 +86,31 @@ public:
             return 1;
         }
 
-        if (!result.count("hostname") || !result.count("port") || !result.count("input-size") || !result.count("output-log") || !result.count("window-size"))
+        if (!result.count("hostname") || !result.count("port") || !result.count("input-file") || !result.count("output-log") || !result.count("window-size"))
         {
             cerr << "Error: Missing required arguments\n\n"
                  << opts.help() << "\n";
             return 1;
         }
 
+        hostname = result["hostname"].as<string>();
+        port = result["port"].as<int>();
+        window_size = result["window-size"].as<int>();
+        input_file = result["input-file"].as<string>();
+        output_log = result["output-log"].as<string>();
+
         if (port < 1024 || port > 65535)
         {
             spdlog::error("Error: port number must be in the range of [1024, 65535]\n");
             return 1;
         }
-        hostname = result["hostname"].as<string>();
-        port = result["port"].as<int>();
-        window_size = result["window-size"].as<int>();
-        input_file = result["input-size"].as<string>();
-        output_log = result["output-log"].as<string>();
+
+        outputStream.open(output_log, ios::out | ios::trunc);
     }
 
     void readFile()
     {
         ifstream is(input_file, ios::binary);
-        if (!is)
-            return 1;
-
         is.seekg(0, ios::end);
         int length = is.tellg();
         is.seekg(0, ios::beg);
@@ -102,52 +121,183 @@ public:
         is.read(reinterpret_cast<char *>(buffer.data()), length);
         if (is)
         {
-            spdlog::debug << "all bytes read successfully.\n";
+            spdlog::debug("all bytes read successfully.\n");
         }
         else
         {
-            spdlog::debug << "error: only " << is.gcount() << " could be read" << endl;
+            spdlog::debug("error: only {} bytes could be read", static_cast<size_t>(is.gcount()));
         }
         is.close();
 
-        size_t numChunksNeeded = static_cast<size_t>(ceil(double(length) / double(1456)));
-        vector<OutPkt> dataPkts(numChunksNeeded);
+        size_t numChunksNeeded = (length + 1456 - 1) / 1456;
+        dataPkts.resize(numChunksNeeded);
         for (size_t i = 0; i < numChunksNeeded; i++)
         {
             size_t offset = i * 1456;
-            size_t len = min(1456, file.size() - offset);
-            dataPkts[i] = make_data(i, file.data() + offset, len);
+            dataPkts[i] = makePacket(DATA, static_cast<uint32_t>(i), buffer.data() + offset, min(1456, length - offset));
+        }
+    }
+
+    vector<uint8_t> makePacket(uint32_t type, uint32_t seq, const uint8_t *data, size_t packLen)
+    {
+
+        PacketHeader h{type, seq, static_cast<uint32_t>(packLen), (type == DATA) ? crc32(data, packLen) : 0};
+        vector<uint8_t> buff(sizeof(PacketHeader) + packLen);
+        memcpy(buff.data(), &h, sizeof(h));
+        if (packLen > 0)
+            memcpy(buff.data() + sizeof(h), data, packLen);
+        return buff;
+    }
+
+    int createSocket()
+    {
+        sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+        if (sockfd < 0)
+        {
+            perror("socket failed");
+            return 1;
         }
 
-        OutPkt p;
-        p.buf.resize(HDR_SZ + len);
-
-        PacketHeader hdr{};
-        hdr.type = TYPE_DATA;
-        hdr.seqNum = seq;
-        hdr.length = len;
-        hdr.checksum = crc32(data, len);
-
-        std::memcpy(p.buf.data(), &hdr, sizeof hdr);   // write header bytes
-        std::memcpy(p.buf.data() + HDR_SZ, data, len); // write payload
-        p.hdr = hdr;                                   // cached typed copy
-        return p;
+        // 2. Define server address
+        serverAddr.sin_family = AF_INET;
+        serverAddr.sin_port = htons(port);
+        if (inet_pton(AF_INET, hostname.c_str(), &serverAddr.sin_addr) <= 0)
+        {
+            spdlog::error("Invalid address/ Address not supported: {}", hostname);
+            return -1;
+        }
 
         return 0;
+    }
+
+    void sendData(const vector<uint8_t> &bytes)
+    {
+        size_t currLen = sizeof(serverAddr);
+        sendto(sockfd, bytes.data(), bytes.size(), 0,
+               (struct sockaddr *)&serverAddr, currLen);
+
+        PacketHeader currHeader{};
+        memcpy(&currHeader, bytes.data(), sizeof(currHeader));
+        outputStream << currHeader.type << ' ' << currHeader.seqNum << ' ' << currHeader.length << ' ' << currHeader.checksum << '\n';
+        outputStream.flush();
+    }
+
+    bool recvData(PacketHeader &ack)
+    {
+        for (;;)
+        {
+            size_t currLen = sizeof(serverAddr);
+            uint8_t buffer[sizeof(PacketHeader)];
+            ssize_t n = recvfrom(sockfd, buffer, sizeof(buffer), MSG_DONTWAIT,
+                                 (struct sockaddr *)&serverAddr, &currLen);
+
+            if (Clock::now() >= endTime)
+            {
+                return false;
+            }
+            if (n >= static_cast<ssize_t>(sizeof(PacketHeader)))
+            {
+                memcpy(&ack, buffer, sizeof(PacketHeader));
+                return true;
+            }
+        }
+    }
+
+    void sendStartPacket()
+    {
+        random_device rd;
+        mt19937 r(rd());
+        uniform_int_distribution<uint32_t> range;
+        uint32_t startSeq = range(r);
+        vector<uint8_t> startPkt = makePacket(START, startSeq, nullptr, 0);
+        while (true)
+        {
+            sendData(startPkt);
+            endTime = Clock::now() + milliseconds(500);
+            PacketHeader ack{};
+            if (recvData(ack) && ack.type == ACK && ack.seqNum == startSeq)
+            {
+                spdlog::debug("START handshake complete (seq={})", startSeq);
+                break;
+            }
+        }
+    }
+
+    void sendCurrWindow()
+    {
+        while ((firstInWindow + window_size) > nextSeqNum && nextSeqNum < dataPkts.size())
+        {
+            sendData(dataPkts[nextSeqNum]);
+            nextSeqNum++;
+        }
+        if (firstInWindow < nextSeqNum)
+            endTime = Clock::now() + milliseconds(500);
+    }
+
+    void resendCurrWindow()
+    {
+        for (int i = firstInWindow; i < nextSeqNum; i++)
+        {
+            sendData(dataPkts[i]);
+        }
+        endTime = Clock::now() + milliseconds(500);
+    }
+
+    void sendAllDataPackets()
+    {
+        firstInWindow = 0;
+        nextSeqNum = 0;
+        sendCurrWindow();
+
+        while (firstInWindow < dataPkts.size())
+        {
+            PacketHeader ack{};
+            if (recvData(ack))
+            {
+                if (ack.type == ACK && ack.seqNum >= firstInWindow && ack.seqNum < nextSeqNum)
+                {
+                    spdlog::debug("Received ACK for seq={}", ack.seqNum);
+                    firstInWindow = min(ack.seqNum + 1, nextSeqNum);
+                    sendCurrWindow();
+                }
+            }
+            else
+            {
+                spdlog::debug("reached timeout");
+                resendCurrWindow();
+            }
+        }
+    }
+    void sendEndPacket()
+    {
+        vector<uint8_t> endPkt = makePacket(END, 0, nullptr, 0);
+        while (true)
+        {
+            sendData(endPkt);
+            endTime = Clock::now() + milliseconds(500);
+            PacketHeader ack{};
+            if (recvData(ack) && ack.type == ACK)
+            {
+                spdlog::debug("END handshake complete");
+                break;
+            }
+        }
     }
 };
 int main(int argc, char **argv)
 {
 
     ios_base::sync_with_stdio(false);
-
-    cxxopts::Options opts("wSender");
-
     spdlog::set_level(spdlog::level::debug);
-    spdlog::info("miProxy started");
+    spdlog::info("wSender started");
+
     wSender sender;
     sender.parseResults(argc, argv);
     sender.readFile();
+    sender.createSocket();
+    sender.sendStartPacket();
+    sender.sendAllDataPackets();
+    sender.sendEndPacket();
 
     return 0;
 }

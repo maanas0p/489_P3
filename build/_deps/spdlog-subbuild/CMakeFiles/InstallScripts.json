@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/_deps/spdlog-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
