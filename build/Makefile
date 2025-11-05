@@ -142,6 +142,32 @@ wReceiver/fast:
 	$(MAKE) $(MAKESILENT) -f src/wReceiver/CMakeFiles/wReceiver.dir/build.make src/wReceiver/CMakeFiles/wReceiver.dir/build
 .PHONY : wReceiver/fast
 
+#=============================================================================
+# Target rules for targets named wSenderOpt
+
+# Build rule for target.
+wSenderOpt: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 wSenderOpt
+.PHONY : wSenderOpt
+
+# fast build rule for target.
+wSenderOpt/fast:
+	$(MAKE) $(MAKESILENT) -f src/wSenderOpt/CMakeFiles/wSenderOpt.dir/build.make src/wSenderOpt/CMakeFiles/wSenderOpt.dir/build
+.PHONY : wSenderOpt/fast
+
+#=============================================================================
+# Target rules for targets named wReceiverOpt
+
+# Build rule for target.
+wReceiverOpt: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 wReceiverOpt
+.PHONY : wReceiverOpt
+
+# fast build rule for target.
+wReceiverOpt/fast:
+	$(MAKE) $(MAKESILENT) -f src/wReceiverOpt/CMakeFiles/wReceiverOpt.dir/build.make src/wReceiverOpt/CMakeFiles/wReceiverOpt.dir/build
+.PHONY : wReceiverOpt/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -151,7 +177,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... wReceiver"
+	@echo "... wReceiverOpt"
 	@echo "... wSender"
+	@echo "... wSenderOpt"
 .PHONY : help
 
 

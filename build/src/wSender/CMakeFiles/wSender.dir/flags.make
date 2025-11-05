@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB
 
-CXX_INCLUDES = -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/common -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -isystem /opt/anaconda3/include
+CXX_INCLUDES = -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/common -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include
 
 CXX_FLAGSarm64 = -g -std=gnu++20 -arch arm64
 

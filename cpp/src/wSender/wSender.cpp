@@ -20,6 +20,7 @@
 #include <unordered_set>
 #include <random>
 #include "../common/Crc32.hpp"
+#include <fstream>
 
 using namespace std;
 using Clock = chrono::high_resolution_clock;
@@ -40,10 +41,11 @@ public:
 
     ofstream outputStream;
 
-    int firstInWindow = 0;
-    int nextSeqNum = 0;
+    uint32_t firstInWindow = 0;
+    uint32_t nextSeqNum = 0;
+    uint32_t startSeq = 0;
 
-    chrono::time_point endTime{};
+    Clock::time_point endTime{};
 
     enum : uint32_t
     {
@@ -63,7 +65,7 @@ public:
 
     vector<vector<uint8_t>> dataPkts;
 
-    int parseResults(argc, argv)
+    int parseArguments(int argc, char **argv)
     {
         cxxopts::Options opts("wSender");
         opts.add_options()("h,hostname", "The IP address of the host that wReceiver is running on.", cxxopts::value<string>())("p,port", "The port number on which wReceiver is listening", cxxopts::value<int>())("w,window-size", "Maximum number of outstanding packets in the current window.", cxxopts::value<int>())("i,input-file", "Path to the file that has to be transferred. It can be a text file or binary file.", cxxopts::value<string>())("o,output-log", "The file path to which you should log the messages as described above.", cxxopts::value<string>());
@@ -106,6 +108,7 @@ public:
         }
 
         outputStream.open(output_log, ios::out | ios::trunc);
+        return 0;
     }
 
     void readFile()
@@ -117,11 +120,11 @@ public:
 
         vector<unsigned char> buffer(length);
 
-        spdlog::debug << "Reading " << length << " bytes... ";
+        spdlog::debug("reading {} bytes...", length);
         is.read(reinterpret_cast<char *>(buffer.data()), length);
         if (is)
         {
-            spdlog::debug("all bytes read successfully.\n");
+            spdlog::debug("all bytes read successfully1.\n");
         }
         else
         {
@@ -129,13 +132,20 @@ public:
         }
         is.close();
 
+        spdlog::debug("closed the input file.");
+
         size_t numChunksNeeded = (length + 1456 - 1) / 1456;
         dataPkts.resize(numChunksNeeded);
+        spdlog::debug("Preparing {} data packets...", numChunksNeeded);
         for (size_t i = 0; i < numChunksNeeded; i++)
         {
+            spdlog::debug("Preparing packet {}", i);
             size_t offset = i * 1456;
-            dataPkts[i] = makePacket(DATA, static_cast<uint32_t>(i), buffer.data() + offset, min(1456, length - offset));
+            auto pkt = makePacket(DATA, static_cast<uint32_t>(i), buffer.data() + offset, min(static_cast<unsigned int>(1456), static_cast<unsigned int>(length - offset)));
+            dataPkts[i] = pkt;
+            spdlog::debug("Packet {} has total size {}, packet SeqNum {}", i, dataPkts[i].size(), static_cast<uint32_t>(i));
         }
+        spdlog::debug("Prepared {} data packets", numChunksNeeded);
     }
 
     vector<uint8_t> makePacket(uint32_t type, uint32_t seq, const uint8_t *data, size_t packLen)
@@ -173,9 +183,9 @@ public:
     void sendData(const vector<uint8_t> &bytes)
     {
         size_t currLen = sizeof(serverAddr);
-        sendto(sockfd, bytes.data(), bytes.size(), 0,
-               (struct sockaddr *)&serverAddr, currLen);
-
+        int sent = sendto(sockfd, bytes.data(), bytes.size(), 0,
+                          (struct sockaddr *)&serverAddr, currLen);
+        spdlog::debug("Actually sent {} bytes", sent);
         PacketHeader currHeader{};
         memcpy(&currHeader, bytes.data(), sizeof(currHeader));
         outputStream << currHeader.type << ' ' << currHeader.seqNum << ' ' << currHeader.length << ' ' << currHeader.checksum << '\n';
@@ -186,7 +196,7 @@ public:
     {
         for (;;)
         {
-            size_t currLen = sizeof(serverAddr);
+            socklen_t currLen = sizeof(serverAddr);
             uint8_t buffer[sizeof(PacketHeader)];
             ssize_t n = recvfrom(sockfd, buffer, sizeof(buffer), MSG_DONTWAIT,
                                  (struct sockaddr *)&serverAddr, &currLen);
@@ -213,8 +223,9 @@ public:
         while (true)
         {
             sendData(startPkt);
-            endTime = Clock::now() + milliseconds(500);
+            endTime = Clock::now() + ms(500);
             PacketHeader ack{};
+            spdlog::debug("Sent START packet with seq={}", startSeq);
             if (recvData(ack) && ack.type == ACK && ack.seqNum == startSeq)
             {
                 spdlog::debug("START handshake complete (seq={})", startSeq);
@@ -227,11 +238,12 @@ public:
     {
         while ((firstInWindow + window_size) > nextSeqNum && nextSeqNum < dataPkts.size())
         {
+            spdlog::debug("Sending DATA packet with size={}", dataPkts[nextSeqNum].size());
             sendData(dataPkts[nextSeqNum]);
             nextSeqNum++;
         }
         if (firstInWindow < nextSeqNum)
-            endTime = Clock::now() + milliseconds(500);
+            endTime = Clock::now() + ms(500);
     }
 
     void resendCurrWindow()
@@ -240,7 +252,7 @@ public:
         {
             sendData(dataPkts[i]);
         }
-        endTime = Clock::now() + milliseconds(500);
+        endTime = Clock::now() + ms(500);
     }
 
     void sendAllDataPackets()
@@ -270,11 +282,11 @@ public:
     }
     void sendEndPacket()
     {
-        vector<uint8_t> endPkt = makePacket(END, 0, nullptr, 0);
+        vector<uint8_t> endPkt = makePacket(END, startSeq, nullptr, 0);
         while (true)
         {
             sendData(endPkt);
-            endTime = Clock::now() + milliseconds(500);
+            endTime = Clock::now() + ms(500);
             PacketHeader ack{};
             if (recvData(ack) && ack.type == ACK)
             {
@@ -292,12 +304,17 @@ int main(int argc, char **argv)
     spdlog::info("wSender started");
 
     wSender sender;
-    sender.parseResults(argc, argv);
+    sender.parseArguments(argc, argv);
     sender.readFile();
+    spdlog::debug("Read file and prepared {} data packets", sender.dataPkts.size());
     sender.createSocket();
+    spdlog::debug("Socket created");
     sender.sendStartPacket();
+    spdlog::debug("START packet sent and acknowledged");
     sender.sendAllDataPackets();
+    spdlog::debug("All DATA packets sent and acknowledged");
     sender.sendEndPacket();
+    spdlog::debug("END packet sent and acknowledged");
 
     return 0;
 }

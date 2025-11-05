@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/wReciever.dir/wReceiver.cpp.o -o ../../bin/wReciever  -Wl,-rpath,/opt/anaconda3/lib /opt/anaconda3/lib/libspdlog.1.11.0.dylib -lpugixml::pugixml /opt/anaconda3/lib/libboost_regex.dylib /opt/anaconda3/lib/libfmt.9.1.0.dylib

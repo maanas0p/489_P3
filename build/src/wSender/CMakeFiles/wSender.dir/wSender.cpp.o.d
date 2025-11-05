@@ -793,7 +793,7 @@ src/wSender/CMakeFiles/wSender.dir/wSender.cpp.o: \
   /opt/homebrew/include/spdlog/details/null_mutex.h \
   /opt/homebrew/include/spdlog/tweakme.h \
   /opt/homebrew/include/spdlog/fmt/fmt.h \
-  /opt/homebrew/include/fmt/base.h /opt/homebrew/include/fmt/format.h \
+  /opt/homebrew/include/fmt/format.h /opt/homebrew/include/fmt/base.h \
   /opt/homebrew/include/spdlog/details/registry.h \
   /opt/homebrew/include/spdlog/details/periodic_worker.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/condition_variable \
