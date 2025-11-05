@@ -184,7 +184,7 @@ public:
             string filename = output_dir + "/FILE-" + to_string(fileNum) + ".out";
             outputStream.open(filename, ios::binary | ios::trunc);
             fileNum++;
-            ackAndLog(nextExpectedSeqNum, clientAddr, len);
+            ackAndLog(startSeqNum, clientAddr, len);
             break;
         }
     }
@@ -207,11 +207,12 @@ public:
             spdlog::debug("Received {} bytes", n);
             PacketHeader h{};
             memcpy(&h, receviedPackets.data(), sizeof(h));
-            loggingStream << h.type << ' ' << h.seqNum << ' ' << h.length << ' ' << h.checksum << '\n';
-            loggingStream.flush();
+
             spdlog::debug("Packet type: {}, seqNum: {}, length: {}, checksum: {}", h.type, h.seqNum, h.length, h.checksum);
             if (h.type == END)
             {
+                loggingStream << h.type << ' ' << h.seqNum << ' ' << h.length << ' ' << h.checksum << '\n';
+                loggingStream.flush();
                 if (connection && h.seqNum == startSeqNum)
                 {
                     ackAndLog(startSeqNum, clientAddr, len);
@@ -223,9 +224,11 @@ public:
                     connection = false;
                     nextExpectedSeqNum = 0;
                     resend.clear();
+                    spdlog::debug("END packet received, connection closed");
+                    break;
                 }
-                spdlog::debug("END packet received, connection closed");
-                break;
+                splog::debug("END packet with wrong seq {}, expected {}", h.seqNum, startSeqNum);
+                continue;
             }
 
             uint8_t *data = receviedPackets.data() + sizeof(PacketHeader);
@@ -249,6 +252,10 @@ public:
 
             uint32_t N = nextExpectedSeqNum;
             spdlog::debug("Next expected seqNum={}", N);
+
+            loggingStream << h.type << ' ' << h.seqNum << ' ' << h.length << ' ' << h.checksum << '\n';
+            loggingStream.flush();
+
             // If it receives a packet with seqNum=N, it will check for the highest sequence number (say M) of the in­order packets it has already received and send ACK with seqNum=M+1.
             if (h.seqNum == N) // what ur expecting, need to deliver the buffer here
             {

@@ -218,7 +218,7 @@ public:
         random_device rd;
         mt19937 r(rd());
         uniform_int_distribution<uint32_t> range;
-        uint32_t startSeq = range(r);
+        startSeq = range(r);
         vector<uint8_t> startPkt = makePacket(START, startSeq, nullptr, 0);
         while (true)
         {
@@ -266,11 +266,15 @@ public:
             PacketHeader ack{};
             if (recvData(ack))
             {
-                if (ack.type == ACK && ack.seqNum >= firstInWindow && ack.seqNum < nextSeqNum)
+                if (ack.type == ACK && ack.seqNum >= firstInWindow && ack.seqNum <= nextSeqNum)
                 {
-                    spdlog::debug("Received ACK for seq={}", ack.seqNum);
-                    firstInWindow = min(ack.seqNum + 1, nextSeqNum);
-                    sendCurrWindow();
+                    size_t prev = firstInWindow;
+                    firstInWindow = min(ack.seqNum, nextSeqNum);
+
+                    if (firstInWindow > prev)
+                    {
+                        sendCurrWindow();
+                    }
                 }
             }
             else
