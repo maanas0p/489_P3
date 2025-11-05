@@ -363,79 +363,13 @@
 			"path" : "src/CMakeLists.txt"
 		},
 		{
-			"isExternal" : true,
-			"path" : "/opt/homebrew/share/cmake/cxxopts/cxxopts-config-version.cmake"
+			"path" : "src/common/CMakeLists.txt"
 		},
 		{
-			"isExternal" : true,
-			"path" : "/opt/homebrew/share/cmake/cxxopts/cxxopts-config.cmake"
+			"path" : "src/wSender/CMakeLists.txt"
 		},
 		{
-			"isExternal" : true,
-			"path" : "/opt/homebrew/share/cmake/cxxopts/cxxopts-targets.cmake"
-		},
-		{
-			"isExternal" : true,
-			"path" : "/opt/anaconda3/lib/cmake/fmt/fmt-config-version.cmake"
-		},
-		{
-			"isExternal" : true,
-			"path" : "/opt/anaconda3/lib/cmake/fmt/fmt-config.cmake"
-		},
-		{
-			"isExternal" : true,
-			"path" : "/opt/anaconda3/lib/cmake/spdlog/spdlogConfigVersion.cmake"
-		},
-		{
-			"isExternal" : true,
-			"path" : "/opt/anaconda3/lib/cmake/spdlog/spdlogConfig.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/share/cmake/Modules/FindThreads.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/share/cmake/Modules/CheckLibraryExists.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/share/cmake/Modules/CheckIncludeFile.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/share/cmake/Modules/CheckCSourceCompiles.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/share/cmake/Modules/FindPackageHandleStandardArgs.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/share/cmake/Modules/FindPackageMessage.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/share/cmake/Modules/CMakeFindDependencyMacro.cmake"
-		},
-		{
-			"isExternal" : true,
-			"path" : "/opt/anaconda3/lib/cmake/fmt/fmt-config-version.cmake"
-		},
-		{
-			"isExternal" : true,
-			"path" : "/opt/anaconda3/lib/cmake/fmt/fmt-config.cmake"
-		},
-		{
-			"isExternal" : true,
-			"path" : "/opt/anaconda3/lib/cmake/spdlog/spdlogConfigTargets.cmake"
+			"path" : "src/wReceiver/CMakeLists.txt"
 		}
 	],
 	"kind" : "cmakeFiles",
