@@ -208,6 +208,8 @@ public:
             if (n >= static_cast<ssize_t>(sizeof(PacketHeader)))
             {
                 memcpy(&ack, buffer, sizeof(PacketHeader));
+                outputStream << ack.type << ' ' << ack.seqNum << ' ' << ack.length << ' ' << ack.checksum << '\n';
+                outputStream.flush();
                 return true;
             }
         }
@@ -292,7 +294,7 @@ public:
             sendData(endPkt);
             endTime = Clock::now() + ms(500);
             PacketHeader ack{};
-            if (recvData(ack) && ack.type == ACK)
+            if (recvData(ack) && ack.type == ACK && ack.seqNum == startSeq)
             {
                 spdlog::debug("END handshake complete");
                 break;
