@@ -59,14 +59,33 @@ public:
 
     vector<pair<uint32_t, vector<uint8_t>>> resend;
 
+    void 
+
+    void ntohl_func(PacketHeader &h) {
+        h.type = ntohl(h.type);
+        h.seqNum = ntohl(h.seqNum);
+        h.length = ntohl(h.length);
+        h.checksum = ntohl(h.checksum);
+    }
+
+    void htonl_func(PacketHeader &h) {
+        h.type = htonl(h.type);
+        h.seqNum = htonl(h.seqNum);
+        h.length = htonl(h.length);
+        h.checksum = htonl(h.checksum);
+    }
+
+
     vector<uint8_t> makePacket(uint32_t type, uint32_t seq, const uint8_t *data, size_t packLen)
     {
 
         PacketHeader h{type, seq, static_cast<uint32_t>(packLen), (type == DATA) ? crc32(data, packLen) : 0};
+        PacketHeader h2 = h;
+        htonl_func(h2);
         vector<uint8_t> buff(sizeof(PacketHeader) + packLen);
-        memcpy(buff.data(), &h, sizeof(h));
+        memcpy(buff.data(), &h2, sizeof(h2));
         if (packLen > 0)
-            memcpy(buff.data() + sizeof(h), data, packLen);
+            memcpy(buff.data() + sizeof(h2), data, packLen);
         return buff;
     }
 
@@ -147,6 +166,7 @@ public:
 
         PacketHeader ack{};
         memcpy(&ack, ackPkt.data(), sizeof(ack));
+        ntohl_func(ack);
         loggingStream << ack.type << ' ' << ack.seqNum << ' ' << ack.length << ' ' << ack.checksum << '\n';
         loggingStream.flush();
     }
@@ -168,6 +188,7 @@ public:
             }
             PacketHeader h{};
             memcpy(&h, receivedPktHeader.data(), sizeof(h));
+            ntohl_func(h);
             loggingStream << h.type << ' ' << h.seqNum << ' ' << h.length << ' ' << h.checksum << '\n';
             loggingStream.flush();
             resend.clear();
@@ -207,7 +228,7 @@ public:
             spdlog::debug("Received {} bytes", n);
             PacketHeader h{};
             memcpy(&h, receviedPackets.data(), sizeof(h));
-
+            ntohl_func(h);
             spdlog::debug("Packet type: {}, seqNum: {}, length: {}, checksum: {}", h.type, h.seqNum, h.length, h.checksum);
             if (h.type == END)
             {
@@ -227,7 +248,7 @@ public:
                     spdlog::debug("END packet received, connection closed");
                     break;
                 }
-                splog::debug("END packet with wrong seq {}, expected {}", h.seqNum, startSeqNum);
+                spdlog::debug("END packet with wrong seq {}, expected {}", h.seqNum, startSeqNum);
                 continue;
             }
 

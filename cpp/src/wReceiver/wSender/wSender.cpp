@@ -65,6 +65,20 @@ public:
 
     vector<vector<uint8_t>> dataPkts;
 
+       void ntohl_func(PacketHeader &h) {
+        h.type = ntohl(h.type);
+        h.seqNum = ntohl(h.seqNum);
+        h.length = ntohl(h.length);
+        h.checksum = ntohl(h.checksum);
+    }
+
+    void htonl_func(PacketHeader &h) {
+        h.type = htonl(h.type);
+        h.seqNum = htonl(h.seqNum);
+        h.length = htonl(h.length);
+        h.checksum = htonl(h.checksum);
+    }
+
     int parseArguments(int argc, char **argv)
     {
         cxxopts::Options opts("wSender");
@@ -189,6 +203,7 @@ public:
         spdlog::debug("Actually sent {} bytes", sent);
         PacketHeader currHeader{};
         memcpy(&currHeader, bytes.data(), sizeof(currHeader));
+        ntohl_func(currHeader);
         outputStream << currHeader.type << ' ' << currHeader.seqNum << ' ' << currHeader.length << ' ' << currHeader.checksum << '\n';
         outputStream.flush();
     }
@@ -209,6 +224,11 @@ public:
             if (n >= static_cast<ssize_t>(sizeof(PacketHeader)))
             {
                 memcpy(&ack, buffer, sizeof(PacketHeader));
+                ntohl_func(ack);
+                //need to log
+                outputStream << ack.type << ' ' << ack.seqNum << ' '
+                         << ack.length << ' ' << ack.checksum << '\n';
+                outputStream.flush();
                 return true;
             }
         }
