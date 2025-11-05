@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/cmake_install.cmake",
-		"/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

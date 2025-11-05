@@ -57,14 +57,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "wReceiver::@145eef247bfb46b6828c",
-					"jsonFile" : "target-wReceiver-Debug-b313413c03b53f096843.json",
+					"jsonFile" : "target-wReceiver-Debug-007ef6285352bf2addbc.json",
 					"name" : "wReceiver",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "wSender::@145eef247bfb46b6828c",
-					"jsonFile" : "target-wSender-Debug-9010ba8021fa797b7c76.json",
+					"jsonFile" : "target-wSender-Debug-67cd37d952c05cee3a37.json",
 					"name" : "wSender",
 					"projectIndex" : 0
 				}

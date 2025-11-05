@@ -1,6 +1,0 @@
-/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/CMakeFiles/edit_cache.dir
-/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/CMakeFiles/rebuild_cache.dir
-/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/CMakeFiles/wReceiver.dir
-/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/CMakeFiles/wSender.dir
-/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/CMakeFiles/edit_cache.dir
-/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/CMakeFiles/rebuild_cache.dir
