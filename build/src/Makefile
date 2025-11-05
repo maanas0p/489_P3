@@ -116,6 +116,82 @@ depend:
 	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+# Convenience name for target.
+src/CMakeFiles/wReceiver.dir/rule:
+	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/wReceiver.dir/rule
+.PHONY : src/CMakeFiles/wReceiver.dir/rule
+
+# Convenience name for target.
+wReceiver: src/CMakeFiles/wReceiver.dir/rule
+.PHONY : wReceiver
+
+# fast build rule for target.
+wReceiver/fast:
+	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/wReceiver.dir/build.make src/CMakeFiles/wReceiver.dir/build
+.PHONY : wReceiver/fast
+
+# Convenience name for target.
+src/CMakeFiles/wSender.dir/rule:
+	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/wSender.dir/rule
+.PHONY : src/CMakeFiles/wSender.dir/rule
+
+# Convenience name for target.
+wSender: src/CMakeFiles/wSender.dir/rule
+.PHONY : wSender
+
+# fast build rule for target.
+wSender/fast:
+	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/wSender.dir/build.make src/CMakeFiles/wSender.dir/build
+.PHONY : wSender/fast
+
+wReceiver/wReceiver.o: wReceiver/wReceiver.cpp.o
+.PHONY : wReceiver/wReceiver.o
+
+# target to build an object file
+wReceiver/wReceiver.cpp.o:
+	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/wReceiver.dir/build.make src/CMakeFiles/wReceiver.dir/wReceiver/wReceiver.cpp.o
+.PHONY : wReceiver/wReceiver.cpp.o
+
+wReceiver/wReceiver.i: wReceiver/wReceiver.cpp.i
+.PHONY : wReceiver/wReceiver.i
+
+# target to preprocess a source file
+wReceiver/wReceiver.cpp.i:
+	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/wReceiver.dir/build.make src/CMakeFiles/wReceiver.dir/wReceiver/wReceiver.cpp.i
+.PHONY : wReceiver/wReceiver.cpp.i
+
+wReceiver/wReceiver.s: wReceiver/wReceiver.cpp.s
+.PHONY : wReceiver/wReceiver.s
+
+# target to generate assembly for a file
+wReceiver/wReceiver.cpp.s:
+	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/wReceiver.dir/build.make src/CMakeFiles/wReceiver.dir/wReceiver/wReceiver.cpp.s
+.PHONY : wReceiver/wReceiver.cpp.s
+
+wSender/wSender.o: wSender/wSender.cpp.o
+.PHONY : wSender/wSender.o
+
+# target to build an object file
+wSender/wSender.cpp.o:
+	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/wSender.dir/build.make src/CMakeFiles/wSender.dir/wSender/wSender.cpp.o
+.PHONY : wSender/wSender.cpp.o
+
+wSender/wSender.i: wSender/wSender.cpp.i
+.PHONY : wSender/wSender.i
+
+# target to preprocess a source file
+wSender/wSender.cpp.i:
+	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/wSender.dir/build.make src/CMakeFiles/wSender.dir/wSender/wSender.cpp.i
+.PHONY : wSender/wSender.cpp.i
+
+wSender/wSender.s: wSender/wSender.cpp.s
+.PHONY : wSender/wSender.s
+
+# target to generate assembly for a file
+wSender/wSender.cpp.s:
+	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/wSender.dir/build.make src/CMakeFiles/wSender.dir/wSender/wSender.cpp.s
+.PHONY : wSender/wSender.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -124,6 +200,14 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... wReceiver"
+	@echo "... wSender"
+	@echo "... wReceiver/wReceiver.o"
+	@echo "... wReceiver/wReceiver.i"
+	@echo "... wReceiver/wReceiver.s"
+	@echo "... wSender/wSender.o"
+	@echo "... wSender/wSender.i"
+	@echo "... wSender/wSender.s"
 .PHONY : help
 
 

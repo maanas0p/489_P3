@@ -27,7 +27,12 @@
 					},
 					"parentIndex" : 0,
 					"projectIndex" : 0,
-					"source" : "src"
+					"source" : "src",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
 				}
 			],
 			"name" : "Debug",
@@ -39,10 +44,31 @@
 						0,
 						1
 					],
-					"name" : "eecs489-project3-wn25"
+					"name" : "eecs489-project3-wn25",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
 				}
 			],
-			"targets" : []
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "wReceiver::@145eef247bfb46b6828c",
+					"jsonFile" : "target-wReceiver-Debug-b313413c03b53f096843.json",
+					"name" : "wReceiver",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "wSender::@145eef247bfb46b6828c",
+					"jsonFile" : "target-wSender-Debug-9010ba8021fa797b7c76.json",
+					"name" : "wSender",
+					"projectIndex" : 0
+				}
+			]
 		}
 	],
 	"kind" : "codemodel",

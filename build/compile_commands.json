@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src",
+  "command": "/usr/bin/c++ -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -isystem /opt/anaconda3/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/wReceiver.dir/wReceiver/wReceiver.cpp.o -c /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wReceiver/wReceiver.cpp",
+  "file": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wReceiver/wReceiver.cpp",
+  "output": "src/CMakeFiles/wReceiver.dir/wReceiver/wReceiver.cpp.o"
+},
+{
+  "directory": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src",
+  "command": "/usr/bin/c++ -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -isystem /opt/anaconda3/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/wSender.dir/wSender/wSender.cpp.o -c /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wSender/wSender.cpp",
+  "file": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wSender/wSender.cpp",
+  "output": "src/CMakeFiles/wSender.dir/wSender/wSender.cpp.o"
+}
+]

@@ -116,6 +116,32 @@ depend:
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+#=============================================================================
+# Target rules for targets named wReceiver
+
+# Build rule for target.
+wReceiver: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 wReceiver
+.PHONY : wReceiver
+
+# fast build rule for target.
+wReceiver/fast:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/wReceiver.dir/build.make src/CMakeFiles/wReceiver.dir/build
+.PHONY : wReceiver/fast
+
+#=============================================================================
+# Target rules for targets named wSender
+
+# Build rule for target.
+wSender: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 wSender
+.PHONY : wSender
+
+# fast build rule for target.
+wSender/fast:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/wSender.dir/build.make src/CMakeFiles/wSender.dir/build
+.PHONY : wSender/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -124,6 +150,8 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... wReceiver"
+	@echo "... wSender"
 .PHONY : help
 
 
