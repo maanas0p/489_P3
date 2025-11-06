@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "bin/wSender"
+			"path" : "bin/wReceiverOpt"
 		}
 	],
 	"backtrace" : 1,
@@ -19,9 +19,9 @@
 		],
 		"files" : 
 		[
-			"src/wSender/CMakeLists.txt",
-			"/opt/homebrew/lib/cmake/spdlog/spdlogConfigTargets.cmake",
-			"/opt/homebrew/lib/cmake/spdlog/spdlogConfig.cmake",
+			"src/wReceiverOpt/CMakeLists.txt",
+			"/opt/anaconda3/lib/cmake/spdlog/spdlogConfigTargets.cmake",
+			"/opt/anaconda3/lib/cmake/spdlog/spdlogConfig.cmake",
 			"CMakeLists.txt"
 		],
 		"nodes" : 
@@ -67,7 +67,7 @@
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 61,
+				"line" : 56,
 				"parent" : 7
 			},
 			{
@@ -120,6 +120,11 @@
 					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/opt/homebrew/include"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "/opt/anaconda3/include"
 				}
 			],
 			"language" : "CXX",
@@ -137,7 +142,7 @@
 			]
 		}
 	],
-	"id" : "wSender::@c1b8c90e0b0a6515ac80",
+	"id" : "wReceiverOpt::@5a962a87ab61b10d7cc1",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -151,28 +156,28 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/opt/homebrew/lib",
+				"fragment" : "-Wl,-rpath,/opt/anaconda3/lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "/opt/homebrew/lib/libspdlog.1.16.0.dylib",
+				"fragment" : "/opt/anaconda3/lib/libspdlog.1.11.0.dylib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 8,
-				"fragment" : "/opt/homebrew/lib/libfmt.12.1.0.dylib",
+				"fragment" : "/opt/anaconda3/lib/libfmt.9.1.0.dylib",
 				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
 	},
-	"name" : "wSender",
-	"nameOnDisk" : "wSender",
+	"name" : "wReceiverOpt",
+	"nameOnDisk" : "wReceiverOpt",
 	"paths" : 
 	{
-		"build" : "src/wSender",
-		"source" : "src/wSender"
+		"build" : "src/wReceiverOpt",
+		"source" : "src/wReceiverOpt"
 	},
 	"sourceGroups" : 
 	[
@@ -189,7 +194,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/wSender/wSender.cpp",
+			"path" : "src/wReceiverOpt/wReceiverOpt.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

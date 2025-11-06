@@ -15,7 +15,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/lib/cmake/Boost-1.89.0"
+			"value" : "/opt/anaconda3/lib/cmake/Boost-1.82.0"
 		},
 		{
 			"name" : "Boost_INCLUDE_DIR",
@@ -27,7 +27,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/include"
+			"value" : "/opt/anaconda3/include"
 		},
 		{
 			"name" : "Boost_REGEX_LIBRARY_RELEASE",
@@ -39,7 +39,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "/opt/homebrew/lib/libboost_regex.dylib"
+			"value" : "/opt/anaconda3/lib/libboost_regex.dylib"
 		},
 		{
 			"name" : "CMAKE_ADDR2LINE",
@@ -502,10 +502,6 @@
 			"properties" : 
 			[
 				{
-					"name" : "ADVANCED",
-					"value" : "1"
-				},
-				{
 					"name" : "HELPSTRING",
 					"value" : "No help, variable specified on the command line."
 				}
@@ -623,7 +619,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/usr/bin/install_name_tool"
+			"value" : "/opt/anaconda3/bin/install_name_tool"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1331,7 +1327,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "[/opt/homebrew/lib/cmake/Boost-1.89.0/BoostConfig.cmake][found components: regex ][v1.89.0()]"
+			"value" : "[/opt/anaconda3/lib/cmake/Boost-1.82.0/BoostConfig.cmake][found components: regex ][v1.82.0()]"
 		},
 		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Threads",
@@ -1359,7 +1355,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/lib/cmake/boost_headers-1.89.0"
+			"value" : "/opt/anaconda3/lib/cmake/boost_headers-1.82.0"
 		},
 		{
 			"name" : "boost_regex_DIR",
@@ -1375,7 +1371,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/lib/cmake/boost_regex-1.89.0"
+			"value" : "/opt/anaconda3/lib/cmake/boost_regex-1.82.0"
 		},
 		{
 			"name" : "cxxopts_DIR",
@@ -1435,7 +1431,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/lib/cmake/fmt"
+			"value" : "/opt/anaconda3/lib/cmake/fmt"
 		},
 		{
 			"name" : "spdlog_DIR",
@@ -1447,7 +1443,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/lib/cmake/spdlog"
+			"value" : "/opt/anaconda3/lib/cmake/spdlog"
 		}
 	],
 	"kind" : "cache",

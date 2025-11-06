@@ -95,8 +95,8 @@ wSenderOpt_EXTERNAL_OBJECTS =
 
 bin/wSenderOpt: src/wSenderOpt/CMakeFiles/wSenderOpt.dir/wSenderOpt.cpp.o
 bin/wSenderOpt: src/wSenderOpt/CMakeFiles/wSenderOpt.dir/build.make
-bin/wSenderOpt: /opt/homebrew/lib/libspdlog.1.16.0.dylib
-bin/wSenderOpt: /opt/homebrew/lib/libfmt.12.1.0.dylib
+bin/wSenderOpt: /opt/anaconda3/lib/libspdlog.1.11.0.dylib
+bin/wSenderOpt: /opt/anaconda3/lib/libfmt.9.1.0.dylib
 bin/wSenderOpt: src/wSenderOpt/CMakeFiles/wSenderOpt.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../../bin/wSenderOpt"
 	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/wSenderOpt && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/wSenderOpt.dir/link.txt --verbose=$(VERBOSE)

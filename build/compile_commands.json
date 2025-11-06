@@ -1,25 +1,25 @@
 [
 {
   "directory": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/wSender",
-  "command": "/usr/bin/c++ -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/common -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/wSender.dir/wSender.cpp.o -c /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wSender/wSender.cpp",
+  "command": "/usr/bin/c++ -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/common -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -isystem /opt/anaconda3/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/wSender.dir/wSender.cpp.o -c /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wSender/wSender.cpp",
   "file": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wSender/wSender.cpp",
   "output": "src/wSender/CMakeFiles/wSender.dir/wSender.cpp.o"
 },
 {
   "directory": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/wReceiver",
-  "command": "/usr/bin/c++ -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/common -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/wReceiver.dir/wReceiver.cpp.o -c /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wReceiver/wReceiver.cpp",
+  "command": "/usr/bin/c++ -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/common -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -isystem /opt/anaconda3/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/wReceiver.dir/wReceiver.cpp.o -c /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wReceiver/wReceiver.cpp",
   "file": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wReceiver/wReceiver.cpp",
   "output": "src/wReceiver/CMakeFiles/wReceiver.dir/wReceiver.cpp.o"
 },
 {
   "directory": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/wSenderOpt",
-  "command": "/usr/bin/c++ -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/common -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/wSenderOpt.dir/wSenderOpt.cpp.o -c /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wSenderOpt/wSenderOpt.cpp",
+  "command": "/usr/bin/c++ -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/common -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -isystem /opt/anaconda3/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/wSenderOpt.dir/wSenderOpt.cpp.o -c /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wSenderOpt/wSenderOpt.cpp",
   "file": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wSenderOpt/wSenderOpt.cpp",
   "output": "src/wSenderOpt/CMakeFiles/wSenderOpt.dir/wSenderOpt.cpp.o"
 },
 {
   "directory": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/wReceiverOpt",
-  "command": "/usr/bin/c++ -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/common -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/wReceiverOpt.dir/wReceiverOpt.cpp.o -c /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wReceiverOpt/wReceiverOpt.cpp",
+  "command": "/usr/bin/c++ -DFMT_SHARED -DSPDLOG_COMPILED_LIB -DSPDLOG_FMT_EXTERNAL -DSPDLOG_SHARED_LIB -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/common -I/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/common -isystem /opt/homebrew/include -isystem /opt/anaconda3/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/wReceiverOpt.dir/wReceiverOpt.cpp.o -c /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wReceiverOpt/wReceiverOpt.cpp",
   "file": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp/src/wReceiverOpt/wReceiverOpt.cpp",
   "output": "src/wReceiverOpt/CMakeFiles/wReceiverOpt.dir/wReceiverOpt.cpp.o"
 }

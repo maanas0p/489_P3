@@ -95,8 +95,8 @@ wReceiver_EXTERNAL_OBJECTS =
 
 bin/wReceiver: src/wReceiver/CMakeFiles/wReceiver.dir/wReceiver.cpp.o
 bin/wReceiver: src/wReceiver/CMakeFiles/wReceiver.dir/build.make
-bin/wReceiver: /opt/homebrew/lib/libspdlog.1.16.0.dylib
-bin/wReceiver: /opt/homebrew/lib/libfmt.12.1.0.dylib
+bin/wReceiver: /opt/anaconda3/lib/libspdlog.1.11.0.dylib
+bin/wReceiver: /opt/anaconda3/lib/libfmt.9.1.0.dylib
 bin/wReceiver: src/wReceiver/CMakeFiles/wReceiver.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../../bin/wReceiver"
 	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/wReceiver && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/wReceiver.dir/link.txt --verbose=$(VERBOSE)

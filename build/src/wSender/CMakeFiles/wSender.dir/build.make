@@ -95,8 +95,8 @@ wSender_EXTERNAL_OBJECTS =
 
 bin/wSender: src/wSender/CMakeFiles/wSender.dir/wSender.cpp.o
 bin/wSender: src/wSender/CMakeFiles/wSender.dir/build.make
-bin/wSender: /opt/homebrew/lib/libspdlog.1.16.0.dylib
-bin/wSender: /opt/homebrew/lib/libfmt.12.1.0.dylib
+bin/wSender: /opt/anaconda3/lib/libspdlog.1.11.0.dylib
+bin/wSender: /opt/anaconda3/lib/libfmt.9.1.0.dylib
 bin/wSender: src/wSender/CMakeFiles/wSender.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../../bin/wSender"
 	cd /Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/build/src/wSender && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/wSender.dir/link.txt --verbose=$(VERBOSE)

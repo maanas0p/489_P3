@@ -210,10 +210,10 @@ public:
         size_t currLen = sizeof(serverAddr);
         int sent = sendto(sockfd, bytes.data(), bytes.size(), 0,
                           (struct sockaddr *)&serverAddr, currLen);
-        spdlog::debug("Actually sent {} bytes", sent);
         PacketHeader currHeader{};
         memcpy(&currHeader, bytes.data(), sizeof(currHeader));
         ntohl_func(currHeader);
+        spdlog::debug("Actually sent {} bytes with seq Num", sent, currHeader.seqNum);
         outputStream << currHeader.type << ' ' << currHeader.seqNum << ' ' << currHeader.length << ' ' << currHeader.checksum << '\n';
         outputStream.flush();
     }

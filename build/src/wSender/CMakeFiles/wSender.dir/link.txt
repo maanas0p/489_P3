@@ -1,1 +1,1 @@
-/usr/bin/c++ -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/wSender.dir/wSender.cpp.o -o ../../bin/wSender  -Wl,-rpath,/opt/homebrew/lib /opt/homebrew/lib/libspdlog.1.16.0.dylib /opt/homebrew/lib/libfmt.12.1.0.dylib
+/usr/bin/c++ -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/wSender.dir/wSender.cpp.o -o ../../bin/wSender  -Wl,-rpath,/opt/anaconda3/lib /opt/anaconda3/lib/libspdlog.1.11.0.dylib /opt/anaconda3/lib/libfmt.9.1.0.dylib
