@@ -59,22 +59,21 @@ public:
 
     vector<pair<uint32_t, vector<uint8_t>>> resend;
 
-    void 
-
-    void ntohl_func(PacketHeader &h) {
+    void ntohl_func(PacketHeader &h)
+    {
         h.type = ntohl(h.type);
         h.seqNum = ntohl(h.seqNum);
         h.length = ntohl(h.length);
         h.checksum = ntohl(h.checksum);
     }
 
-    void htonl_func(PacketHeader &h) {
+    void htonl_func(PacketHeader &h)
+    {
         h.type = htonl(h.type);
         h.seqNum = htonl(h.seqNum);
         h.length = htonl(h.length);
         h.checksum = htonl(h.checksum);
     }
-
 
     vector<uint8_t> makePacket(uint32_t type, uint32_t seq, const uint8_t *data, size_t packLen)
     {
@@ -301,6 +300,8 @@ public:
                         }
                     }
                 }
+                spdlog::debug("Sending ACK for seqNum={}", nextExpectedSeqNum);
+                ackAndLog(nextExpectedSeqNum, clientAddr, len);
                 // deliver the actual buffer not sure how we wanna implement that
             }
             else if ((h.seqNum < N) || (h.seqNum >= N + window_size))
@@ -324,9 +325,9 @@ public:
                     vector<uint8_t> buffer(data, data + h.length);
                     resend.emplace_back(h.seqNum, buffer);
                 }
+                spdlog::debug("Sending DUP ACK for seqNum={}", N);
+                ackAndLog(N, clientAddr, len);
             }
-            spdlog::debug("Sending ACK for seqNum={}", nextExpectedSeqNum);
-            ackAndLog(nextExpectedSeqNum, clientAddr, len);
         }
     }
 };

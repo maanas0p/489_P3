@@ -72,7 +72,8 @@
         "span": "cpp",
         "stack": "cpp",
         "fstream": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "list": "cpp"
     },
     "cmake.sourceDirectory": "/Users/maanaspavuluri/Documents/EECS489/a3-reliable-transport-main/cpp"
 }

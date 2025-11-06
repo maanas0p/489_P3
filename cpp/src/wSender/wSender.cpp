@@ -65,6 +65,22 @@ public:
 
     vector<vector<uint8_t>> dataPkts;
 
+    void ntohl_func(PacketHeader &h)
+    {
+        h.type = ntohl(h.type);
+        h.seqNum = ntohl(h.seqNum);
+        h.length = ntohl(h.length);
+        h.checksum = ntohl(h.checksum);
+    }
+
+    void htonl_func(PacketHeader &h)
+    {
+        h.type = htonl(h.type);
+        h.seqNum = htonl(h.seqNum);
+        h.length = htonl(h.length);
+        h.checksum = htonl(h.checksum);
+    }
+
     int parseArguments(int argc, char **argv)
     {
         cxxopts::Options opts("wSender");
@@ -143,7 +159,8 @@ public:
             size_t offset = i * 1456;
             auto pkt = makePacket(DATA, static_cast<uint32_t>(i), buffer.data() + offset, min(static_cast<unsigned int>(1456), static_cast<unsigned int>(length - offset)));
             dataPkts[i] = pkt;
-            spdlog::debug("Packet {} has total size {}, packet SeqNum {}", i, dataPkts[i].size(), static_cast<uint32_t>(i));
+            spdlog::debug("Packet {} has total size {} (header {} + payload {})",
+                          i, pkt.size(), sizeof(PacketHeader), pkt.size() - sizeof(PacketHeader));
         }
         spdlog::debug("Prepared {} data packets", numChunksNeeded);
     }
@@ -152,6 +169,7 @@ public:
     {
 
         PacketHeader h{type, seq, static_cast<uint32_t>(packLen), (type == DATA) ? crc32(data, packLen) : 0};
+        htonl_func(h);
         vector<uint8_t> buff(sizeof(PacketHeader) + packLen);
         memcpy(buff.data(), &h, sizeof(h));
         if (packLen > 0)
@@ -188,13 +206,14 @@ public:
         spdlog::debug("Actually sent {} bytes", sent);
         PacketHeader currHeader{};
         memcpy(&currHeader, bytes.data(), sizeof(currHeader));
+        ntohl_func(currHeader);
         outputStream << currHeader.type << ' ' << currHeader.seqNum << ' ' << currHeader.length << ' ' << currHeader.checksum << '\n';
         outputStream.flush();
     }
 
     bool recvData(PacketHeader &ack)
     {
-        for (;;)
+        while (true)
         {
             socklen_t currLen = sizeof(serverAddr);
             uint8_t buffer[sizeof(PacketHeader)];
@@ -208,7 +227,10 @@ public:
             if (n >= static_cast<ssize_t>(sizeof(PacketHeader)))
             {
                 memcpy(&ack, buffer, sizeof(PacketHeader));
-                outputStream << ack.type << ' ' << ack.seqNum << ' ' << ack.length << ' ' << ack.checksum << '\n';
+                ntohl_func(ack);
+                // need to log
+                outputStream << ack.type << ' ' << ack.seqNum << ' '
+                             << ack.length << ' ' << ack.checksum << '\n';
                 outputStream.flush();
                 return true;
             }
@@ -268,15 +290,19 @@ public:
             PacketHeader ack{};
             if (recvData(ack))
             {
-                if (ack.type == ACK && ack.seqNum >= firstInWindow && ack.seqNum <= nextSeqNum)
-                {
-                    size_t prev = firstInWindow;
-                    firstInWindow = min(ack.seqNum, nextSeqNum);
+                if (ack.type != ACK)
+                    continue;
 
-                    if (firstInWindow > prev)
-                    {
-                        sendCurrWindow();
-                    }
+                uint32_t PREV = firstInWindow;
+
+                if (ack.seqNum <= nextSeqNum)
+                {
+                    firstInWindow = std::min(ack.seqNum, nextSeqNum);
+                }
+
+                if (firstInWindow > PREV)
+                {
+                    sendCurrWindow();
                 }
             }
             else
@@ -294,7 +320,7 @@ public:
             sendData(endPkt);
             endTime = Clock::now() + ms(500);
             PacketHeader ack{};
-            if (recvData(ack) && ack.type == ACK && ack.seqNum == startSeq)
+            if (recvData(ack) && ack.type == ACK)
             {
                 spdlog::debug("END handshake complete");
                 break;
